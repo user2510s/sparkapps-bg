@@ -166,7 +166,7 @@ export default function RemoveBgPage() {
               </p>
               <button
                 onClick={() => inputRef.current?.click()}
-                className="py-2 px-4 font-extralight cursor-pointer text-white bg-gray-500 rounded text-sm"
+                className="py-2 px-4 font-extralight cursor-pointer text-gray-950 bg-gray-100 rounded text-sm"
               >
                 Browse Files
               </button>
@@ -219,8 +219,8 @@ export default function RemoveBgPage() {
             disabled={!file || loading}
             className={`px-4 py-2 rounded w-full flex items-center justify-center gap-2 mt-6 ${
               file && !loading
-                ? "bg-gray-700 text-white hover:bg-gray-800 transition-all cursor-pointer"
-                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                ? "text-gray-950 bg-gray-100 hover:bg-gray-800 transition-all cursor-pointer"
+                : "text-gray-950 bg-gray-300 cursor-not-allowed"
             }`}
           >
             {loading && <Loader2 className="size-5 shrink-0 animate-spin" />}

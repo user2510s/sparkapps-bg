@@ -44,7 +44,7 @@ export default function PoPup() {
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="inline-flex w-full justify-center rounded-md bg-red-800 px-3 py-2 text-sm font-semibold text-red-100 hover:bg-red-400 sm:ml-3 sm:w-auto"
+                  className="inline-flex w-full justify-center rounded-md text-gray-950 bg-gray-100 px-3 py-2 text-sm font-semibold sm:ml-3 sm:w-auto"
                 >
                   i'm aware
                 </button>

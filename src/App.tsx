@@ -7,7 +7,7 @@ const App = () => {
       <header className="flex items-center justify-between py-4 px-7 fixed w-full top-0 backdrop-blur-2xl z-20">
         
         <img src="/logo.svg" className="w-8" alt="" />
-        <button className="py-2 px-4 font-extralight text-white bg-zinc-500 rounded text-sm cursor-not-allowed">
+        <button className="py-2 px-4 font-extralight text-gray-950 bg-gray-100 rounded text-sm cursor-not-allowed">
           Login
         </button>
       </header>
