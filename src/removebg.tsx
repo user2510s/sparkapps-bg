@@ -5,42 +5,37 @@ import { Download, Loader2, Upload, X } from "lucide-react";
 
 export default function RemoveBgPage() {
   const [file, setFile] = useState<File | null>(null);
-  const [resultUrl, setResultUrl] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [dragActive, setDragActive] = useState<boolean>(false);
   const [preview, setPreview] = useState<string | null>(null);
+  const [resultUrl, setResultUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [dragActive, setDragActive] = useState(false);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // Utilitário para reduzir tamanho da imagem antes de processar
-  const resizeImage = (file: File, maxSize = 1024): Promise<File> => {
-    return new Promise((resolve) => {
+  // Reduz e mantém qualidade da imagem antes de enviar ao modelo
+  const resizeImage = (file: File, maxSize = 2048): Promise<File> =>
+    new Promise((resolve) => {
       const img = new Image();
       const reader = new FileReader();
-      reader.onload = (e) => {
-        img.src = e.target?.result as string;
-      };
+      reader.onload = (e) => (img.src = e.target?.result as string);
       img.onload = () => {
-        const canvas = document.createElement("canvas");
         let { width, height } = img;
-
-        if (width > height) {
-          if (width > maxSize) {
-            height *= maxSize / width;
-            width = maxSize;
-          }
-        } else {
-          if (height > maxSize) {
-            width *= maxSize / height;
-            height = maxSize;
-          }
+        if (width > height && width > maxSize) {
+          height = Math.round((height * maxSize) / width);
+          width = maxSize;
+        } else if (height > maxSize) {
+          width = Math.round((width * maxSize) / height);
+          height = maxSize;
         }
 
+        const canvas = document.createElement("canvas");
         canvas.width = width;
         canvas.height = height;
-        const ctx = canvas.getContext("2d");
-        ctx?.drawImage(img, 0, 0, width, height);
+        const ctx = canvas.getContext("2d")!;
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+        ctx.drawImage(img, 0, 0, width, height);
 
         canvas.toBlob((blob) => {
           if (blob) resolve(new File([blob], file.name, { type: file.type }));
@@ -49,16 +44,14 @@ export default function RemoveBgPage() {
       };
       reader.readAsDataURL(file);
     });
-  };
 
   const handleFile = async (selectedFile: File) => {
     if (!selectedFile.type.startsWith("image/")) {
       setError("Please upload an image file (JPG, PNG)");
       return;
     }
-
-    if (selectedFile.size > 5 * 1024 * 1024) {
-      setError("Image too large. Max 5MB.");
+    if (selectedFile.size > 10 * 1024 * 1024) {
+      setError("Image too large. Max 10MB.");
       return;
     }
 
@@ -74,8 +67,7 @@ export default function RemoveBgPage() {
   const handleDrag = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") setDragActive(true);
-    else if (e.type === "dragleave") setDragActive(false);
+    setDragActive(e.type === "dragenter" || e.type === "dragover");
   };
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
@@ -109,32 +101,38 @@ export default function RemoveBgPage() {
     setLoading(true);
 
     try {
-      // Reduz imagem antes de mandar pro modelo
       const resizedFile = await resizeImage(file);
 
-      // Usa modelo diferente conforme tipo de imagem
+      // Detecta selfie/portrait para usar modelo adequado
       const isSelfie = /selfie|face|portrait/i.test(file.name);
       const resultBlob = await removeBackground(resizedFile, {
         model: isSelfie ? "isnet" : "isnet_fp16",
       });
 
-      //Pós-processamento básico (suaviza borda no canvas)
+      // Pós-processamento para suavizar borda e preservar transparência
       const img = await createImageBitmap(resultBlob);
       const canvas = document.createElement("canvas");
       canvas.width = img.width;
       canvas.height = img.height;
       const ctx = canvas.getContext("2d")!;
-      //ctx.filter = "blur(1px)"; // suaviza recorte
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      ctx.filter = "blur(1px) saturate(1.1)"; // suaviza bordas e realça cores
       ctx.drawImage(img, 0, 0);
 
+      // Suavização alpha nas bordas
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+      for (let i = 0; i < data.length; i += 4) {
+        if (data[i + 3] < 255) data[i + 3] = Math.round(data[i + 3] * 0.9);
+      }
+      ctx.putImageData(imageData, 0, 0);
+
       canvas.toBlob((processed) => {
-        if (processed) {
-          const url = URL.createObjectURL(processed);
-          setResultUrl(url);
-        }
-      });
+        if (processed) setResultUrl(URL.createObjectURL(processed));
+      }, "image/png");
     } catch (err) {
-      console.error("Error:", err);
+      console.error(err);
       setError("❌ Failed to remove background. Try another image.");
     } finally {
       setLoading(false);
@@ -213,7 +211,7 @@ export default function RemoveBgPage() {
 
           <p className="text-gray-400 mt-4 text-sm">
             Processing happens on your device. For best results, use clear
-            images under 5MB. Large images will be resized automatically.
+            images under 10MB. Large images will be resized automatically.
           </p>
 
           <button
@@ -236,7 +234,7 @@ export default function RemoveBgPage() {
           <h2 className="text-2xl font-extralight text-slate-200 mt-6 pl-4">
             Result
           </h2>
-          <div className="space-y-2 w-full flex items-center justify-center border border-gray-200 p-5 rounded-2xl bg-zinc-700/30 backdrop:blur-3xl">
+          <div className="space-y-2 w-full flex items-center justify-center border border-gray-200 p-5 rounded-2xl bg-zinc-700/30 backdrop:blur-3xl relative">
             <div className="flex flex-col justify-center w-full">
               <img
                 src={resultUrl}
