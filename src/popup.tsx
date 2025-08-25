@@ -35,6 +35,7 @@ export default function PoPup() {
                       <p className="text-sm text-gray-400">
                         Errors and crashes may occur during the process! We will always strive to keep it as up to date and free of issues as possible.
                       </p>
+                      <p className='font-extralight text-sm text-red-500'>Not recommended for use on mobile devices.</p>
                     </div>
                   </div>
                 </div>
