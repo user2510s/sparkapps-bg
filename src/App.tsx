@@ -1,3 +1,4 @@
+import PoPup from "./popup";
 import RemoveBgPage from "./removebg";
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
         className="w-full max-w-5xl mx-auto my-10 p-2
       "
       >
+        <PoPup/>
         <div>
           <RemoveBgPage />
         </div>
