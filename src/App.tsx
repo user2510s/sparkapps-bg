@@ -1,5 +1,5 @@
 import PoPup from "./popup";
-import RemoveBgPage from "./removebg";
+import RemoveBgPage from "./pages/RemoveBgPage";
 
 const App = () => {
   return (
