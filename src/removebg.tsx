@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import type { ChangeEvent, DragEvent } from "react";
 import { removeBackground } from "@imgly/background-removal";
 import { Download, Loader2, Upload, X } from "lucide-react";
+import Button from "./components/ui/Button";
 
 export default function RemoveBgPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -117,7 +118,7 @@ export default function RemoveBgPage() {
       const ctx = canvas.getContext("2d")!;
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = "high";
-      ctx.filter = "blur(1px) saturate(1.1)"; // suaviza bordas e realça cores
+      ctx.filter = "blur(0.2px) saturate(1.1)"; // suaviza bordas e realça cores
       ctx.drawImage(img, 0, 0);
 
       // Suavização alpha nas bordas
@@ -193,12 +194,9 @@ export default function RemoveBgPage() {
                     <p className="text-sm text-gray-600">Loading preview...</p>
                   </div>
                 )}
-                <button
-                  onClick={removeFile}
-                  className="absolute right-8 top-0 h-8 w-8 flex items-center justify-center rounded-full bg-gray-600"
-                >
+                <Button onClick={removeFile} variant="exit">
                   <X className="h-4 w-4 text-white shrink-0" />
-                </button>
+                </Button>
               </div>
               <div className="flex items-center justify-around text-zinc-200 font-extralight">
                 <p className="text-sm font-medium">{file.name}</p>
@@ -243,7 +241,7 @@ export default function RemoveBgPage() {
               />
               <a
                 href={resultUrl}
-                download="no-bg.png"
+                download={`${file?.name.replace(/\.[^/.]+$/, "")}.png`}
                 className="flex items-center justify-center gap-2 mt-6 px-4 py-2 bg-slate-600 text-white rounded hover:bg-slate-500 transition-all"
               >
                 <Download className="shrink-0 size-5" />
