@@ -55,9 +55,9 @@ export default function RemoveBgPage() {
 
     try {
       const resizedFile = await resizeImage(file);
-      const isSelfie = /selfie|face|portrait/i.test(file.name);
+      //const isSelfie = /selfie|face|portrait/i.test(file.name);
       const resultBlob = await removeBackground(resizedFile, {
-        model: isSelfie ? "isnet" : "isnet_fp16",
+        model: "isnet_fp16",
       });
 
       const img = await createImageBitmap(resultBlob);
