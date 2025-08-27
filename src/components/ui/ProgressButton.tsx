@@ -18,7 +18,7 @@ export default function ProgressButton({ loading, progress = 0, onClick }: Progr
       const timer = setTimeout(() => setInternalProgress(0), 3000);
       return () => clearTimeout(timer);
     }
-  }, [loading, progress]);
+  }, [internalProgress, loading, progress]);
 
   return (
     <button
