@@ -1,69 +1,82 @@
-# React + TypeScript + Vite
+# 🖼️ Remove BG Images
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Um site simples e moderno que permite remover o **fundo de imagens automaticamente**.
+Construído com **React + Vite + TailwindCSS**, utilizando a biblioteca [`@imgly/background-removal`](https://www.npmjs.com/package/@imgly/background-removal) para processar as imagens.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Funcionalidades
 
-## Expanding the ESLint configuration
+* Upload de imagens direto do navegador
+* Remoção automática de fundo
+* Interface responsiva e moderna com **TailwindCSS**
+* Animações fluidas com **GSAP**
+* Ícones bonitos com **Heroicons** e **Lucide**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🛠️ Tecnologias e Dependências
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+* [React 19](https://react.dev/) + [React DOM](https://react.dev/reference/react-dom)
+* [Vite](https://vitejs.dev/) (build rápido e moderno)
+* [TailwindCSS](https://tailwindcss.com/) + [@tailwindcss/vite](https://tailwindcss.com/docs/guides/vite)
+* [@imgly/background-removal](https://www.npmjs.com/package/@imgly/background-removal) (remoção de fundo)
+* [GSAP](https://gsap.com/) (animações)
+* [Headless UI](https://headlessui.dev/) (componentes acessíveis)
+* [Heroicons](https://heroicons.com/) + [Lucide React](https://lucide.dev/)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## 🚀 Como rodar localmente
+
+### Pré-requisitos
+
+* [Node.js](https://nodejs.org/) 18+
+* [npm](https://www.npmjs.com/) ou [pnpm](https://pnpm.io/)
+
+### Passos
+
+```bash
+# Clone o repositório
+git clone https://github.com/seu-usuario/remove-bg-site.git
+
+# Entre na pasta
+cd remove-bg-site
+
+# Instale as dependências
+npm install
+# ou
+pnpm install
+
+# Rode em modo desenvolvimento
+npm run dev
+
+# Build para produção
+npm run build
+
+# Pré-visualizar build
+npm run preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 📂 Estrutura do Projeto
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+remove-bg-site/
+├── public/            # arquivos estáticos
+├── src/
+│   ├── components/    # componentes React
+│   ├── pages/         # páginas do site
+│   ├── styles/        # estilos globais
+│   └── main.tsx       # ponto de entrada
+├── package.json
+└── vite.config.ts
+```
+
+---
+
+## 📜 Licença
+
+Este projeto está sob a licença **MIT**.
+Sinta-se livre para usar e contribuir. 🙌
