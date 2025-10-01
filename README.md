@@ -38,7 +38,7 @@ Construído com **React + Vite + TailwindCSS**, utilizando a biblioteca [`@imgly
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/remove-bg-site.git
+git clone https://github.com/seu-usuario/remove-bg-site.git](https://github.com/user2510s/sparkapps-bg.git
 
 # Entre na pasta
 cd remove-bg-site
